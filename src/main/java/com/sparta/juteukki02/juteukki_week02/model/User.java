@@ -25,15 +25,15 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
-    public User(UserDto commentDto){
-        this.account = commentDto.getPostid();
-        this.password = commentDto.getWriter();
-        this.nickname = commentDto.getContents();
+    public User(UserDto userDto){
+        this.account = userDto.getAccount();
+        this.password = userDto.getPassword();
+        this.nickname = userDto.getNickname();
     }
-    public void update(CommentDto commentDto){
-        this.postid = commentDto.getPostid();
-        this.writer = commentDto.getWriter();
-        this.contents = commentDto.getContents();
+    public void update(UserDto userDto){
+        this.account = userDto.getAccount();
+        this.password = userDto.getPassword();
+        this.nickname = userDto.getNickname();
 
     }
 }

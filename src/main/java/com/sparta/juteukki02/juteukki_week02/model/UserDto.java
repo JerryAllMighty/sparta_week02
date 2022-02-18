@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 @Getter
 @Setter
 public class UserDto {
-    private String postid;
-    private String writer;
-    private String contents;
+    private String account;
+    private String password;
+    private String nickname;
 }
