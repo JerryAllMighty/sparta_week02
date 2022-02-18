@@ -14,8 +14,8 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @GetMapping("/api/comments/{postid}")
-    public List<User> getPosts(@PathVariable Long postid){
+    @GetMapping("/api/comments")
+    public List<User> getPosts(){
         return userRepository.findAll();
     }
 //    @GetMapping("/api/comments")
