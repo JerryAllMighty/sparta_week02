@@ -1,6 +1,7 @@
 package com.sparta.juteukki02.juteukki_week02.controller;
 
 import com.sparta.juteukki02.juteukki_week02.model.User;
+import com.sparta.juteukki02.juteukki_week02.model.UserDto;
 import com.sparta.juteukki02.juteukki_week02.model.UserRepository;
 import com.sparta.juteukki02.juteukki_week02.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,21 +15,17 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @GetMapping("/api/comments")
+    @GetMapping("/api/login")
     public List<User> getPosts(){
         return userRepository.findAll();
     }
-//    @GetMapping("/api/comments")
-//    public List<CommentsContentsOnly> getPosts(){
-//        return commentRepository.findContents();
-//    }
 
-
-//    @PostMapping("/api/comments")
-//    public Comment createProduct(@RequestBody CommentDto commentDto) {
-//        Comment comment = new Comment(commentDto);
-//        commentRepository.save(comment);
-//        return comment;
+    @PostMapping("/api/register")
+    public User createProduct(@RequestBody UserDto userDto) {
+        User user = new User(userDto);
+        userRepository.save(user);
+        return user;
+    }
 //    }
 //    @PutMapping("/api/comments/{id}")
 //    public Long updateProduct(@PathVariable Long id, @RequestBody CommentDto commentDto) {
