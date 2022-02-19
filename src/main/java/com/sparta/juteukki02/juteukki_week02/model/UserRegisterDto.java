@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-public class UserDto {
+public class UserRegisterDto {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String account;
 
@@ -20,4 +20,7 @@ public class UserDto {
 
     @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;
+
+    @NotBlank(message = "비밀번호 확인을 입력해주세요.")
+    private String passwordcheck;
 }

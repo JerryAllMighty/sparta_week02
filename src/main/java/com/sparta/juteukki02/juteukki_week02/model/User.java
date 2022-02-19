@@ -25,10 +25,24 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
+//    비밀번호 확인을 위해서 만듬.
+    private String passwordcheck;
+
     public User(UserDto userDto){
         this.account = userDto.getAccount();
         this.password = userDto.getPassword();
         this.nickname = userDto.getNickname();
+    }
+    public User(UserLoginDto userLoginDto){
+        this.account = userLoginDto.getAccount();
+        this.password = userLoginDto.getPassword();
+    }
+    public User(UserRegisterDto userRegisterDto){
+        this.account = userRegisterDto.getAccount();
+        this.password = userRegisterDto.getPassword();
+        this.nickname = userRegisterDto.getNickname();
+        this.passwordcheck = userRegisterDto.getPasswordcheck();
+
     }
     public void update(UserDto userDto){
         this.account = userDto.getAccount();
@@ -36,4 +50,5 @@ public class User {
         this.nickname = userDto.getNickname();
 
     }
+
 }
