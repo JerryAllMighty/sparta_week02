@@ -1,4 +1,4 @@
-package com.sparta.juteukki02.juteukki_week02.model;
+package com.sparta.juteukki02.juteukki_week02.Dto;
 
 import lombok.Getter;
 import lombok.Setter;
