@@ -1,51 +1,46 @@
 package com.sparta.juteukki02.juteukki_week02.controller;
 
-import com.sparta.juteukki02.juteukki_week02.model.*;
+
+import com.sparta.juteukki02.juteukki_week02.model.SignupRequestDto;
+import com.sparta.juteukki02.juteukki_week02.model.User;
+import com.sparta.juteukki02.juteukki_week02.model.UserLoginDto;
+import com.sparta.juteukki02.juteukki_week02.model.UserRegisterDto;
 import com.sparta.juteukki02.juteukki_week02.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RequiredArgsConstructor
-@RestController
+@Controller
 public class UserController {
+
     private final UserService userService;
-    private final UserRepository userRepository;
 
-    @GetMapping("/api/login")
-    public List<User> getPosts(){
-        return userRepository.findAll();
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/api/login")
-    public String login(@RequestBody @Valid UserLoginDto idpw){
-        User user = new User(idpw);
-        String id = user.getAccount();
-        String pw = user.getPassword();
-        return userService.checkLogin(id, pw);
-
+    // 회원 로그인 페이지
+    @GetMapping("/user/login")
+    public String login() {
+        return "login";
     }
-
-    @PostMapping("/api/register")
-    public String createProduct(@RequestBody @Valid UserRegisterDto userRegisterDto) {
-        User user = new User(userRegisterDto);
-        return userService.checkRegister(user);
+//    @GetMapping("/user/login?error")
+//    public String loginError() {
+//        JSONObject obj = new JSONObject();
+//        obj.append("result", "fail");
+//        obj.append("msg", "닉네임 또는 패스워드를 확인해주세요.");
+//        return obj.toString();
+//    }
+    // 회원 가입 페이지
+    @GetMapping("/user/signup")
+    public String signup() {
+        return "signup";
     }
-//    }
-//    @PutMapping("/api/comments/{id}")
-//    public Long updateProduct(@PathVariable Long id, @RequestBody CommentDto commentDto) {
-//        return commentservice.update(id, commentDto);
-//    }
-//
-//    @DeleteMapping("/api/comments/{id}")
-//    public Long deleteMemo(@PathVariable Long id) {
-//        commentRepository.deleteById(id);
-//        return id;
-//    }
-
 }
+
