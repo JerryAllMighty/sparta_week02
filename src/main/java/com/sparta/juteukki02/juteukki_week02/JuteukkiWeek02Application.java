@@ -10,4 +10,6 @@ public class JuteukkiWeek02Application {
         SpringApplication.run(JuteukkiWeek02Application.class, args);
     }
 
+
+
 }

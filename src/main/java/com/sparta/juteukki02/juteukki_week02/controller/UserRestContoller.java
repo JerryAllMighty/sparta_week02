@@ -36,18 +36,26 @@ public class UserRestContoller {
 
     @PostMapping("/api/login")
     public void login(@RequestBody @Valid UserLoginDto userLoginDto, HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        request.getSession().invalidate();
+
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
+        PrintWriter writer = response.getWriter();
+
+        JSONObject obj = new JSONObject();
         //        현재 사용자가 로그인을 했는지 체크
+        if (request.getSession(false) != null){
+            obj.append("result", "False");
+            obj.append("msg", "이미 로그인이 되어 있습니다.");
+            writer.print(obj.toString());
+            return;
+        }
 
         String id = userLoginDto.getUsername();
         String pw = userLoginDto.getPassword();
         boolean exists = userRepository.existsByUsernameAndPassword(id, pw);
 
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=UTF-8");
         HttpSession session = request.getSession();
-        PrintWriter writer = response.getWriter();
-
-        JSONObject obj = new JSONObject();
 
         if (exists){
             obj.append("result", "True");
@@ -66,7 +74,15 @@ public class UserRestContoller {
     }
 
     @PostMapping("/api/signup")
-    public String registerUser(@RequestBody @Valid UserRegisterDto userRegisterDto) {
+    public String registerUser(@RequestBody @Valid UserRegisterDto userRegisterDto, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        JSONObject obj = new JSONObject();
+        if (session != null){
+            obj.append("result", "False");
+            obj.append("msg", "이미 로그인이 되어 있습니다.");
+            return obj.toString();
+
+        }
         User user = new User(userRegisterDto);
         return userService.checkRegister(user);
     }
