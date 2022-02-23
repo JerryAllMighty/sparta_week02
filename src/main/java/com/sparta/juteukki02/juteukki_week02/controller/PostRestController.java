@@ -8,10 +8,13 @@ import com.sparta.juteukki02.juteukki_week02.model.*;
 import com.sparta.juteukki02.juteukki_week02.service.LikeService;
 import com.sparta.juteukki02.juteukki_week02.service.PostService;
 import com.sparta.juteukki02.juteukki_week02.service.UserService;
+import com.sparta.juteukki02.juteukki_week02.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -28,41 +31,35 @@ public class PostRestController {
     private final PostRepository postRepository;
 
     @GetMapping("/api/post")
-    public String getPosts(@RequestBody @Valid PostGetDto postGetDto) {
-        JSONObject obj = new JSONObject();
+    public String getPosts(@RequestBody PostGetDto postGetDto) {
         List<Post> posts = postRepository.findAll();
-        obj.append("total",posts);
         List<MyLike> likes = likeRepository.findByUserId(postGetDto.getUsername());
-        System.out.println(likes);
-        obj.append("myLike", likes);
-        return obj.toString();
+        return Helper.makeReturnJSON("total", posts,"myLike",likes);
 
     }
     @PostMapping("/api/post")
-    public String addPosts(@RequestBody @Valid PostRegisterDto postDto) {
-        System.out.println(postDto.getLikeCount());
-        JSONObject obj = new JSONObject();
-        obj.append("result", "True");
-        obj.append("msg", "게시글 등록이 완료되었습니다.");
+    public String addPosts(@RequestBody @Valid PostRegisterDto postDto, HttpServletRequest request) {
+        if (request.getSession(false) == null){
+            return Helper.makeReturnJSON("result", "False","msg","로그인이 필요합니다.");
+        }
         Post post = new Post(postDto);
-        System.out.println(postDto.getLikeCount());
         postRepository.save(post);
-        return obj.toString();
+        return Helper.makeReturnJSON("result", "True","msg","게시글 등록이 완료되었습니다.");
     }
     @PutMapping("/api/post")
-    public String updatePosts(@RequestBody @Valid PostUpdateDto postUpdateDto) {
+    public String updatePosts(@RequestBody @Valid PostUpdateDto postUpdateDto, HttpServletRequest request) {
+        if (request.getSession(false) == null){
+            return Helper.makeReturnJSON("result", "False","msg","로그인이 필요합니다.");
+        }
         postService.update(postUpdateDto);
-        JSONObject obj = new JSONObject();
-        obj.append("result", "True");
-        obj.append("msg", "게시글 수정 완료되었습니다.");
-        return obj.toString();
+        return Helper.makeReturnJSON("result", "True","msg","게시글 수정 완료되었습니다.");
     }
     @DeleteMapping("/api/post")
-    public String deletePosts(@RequestBody @Valid PostDeleteDto postDeleteDto) {
-        JSONObject obj = new JSONObject();
-        obj.append("result", "True");
-        obj.append("msg", "게시글 삭제 완료되었습니다.");
+    public String deletePosts(@RequestBody @Valid PostDeleteDto postDeleteDto, HttpServletRequest request) {
+        if (request.getSession(false) == null){
+            return Helper.makeReturnJSON("result", "False","msg","로그인이 필요합니다.");
+        }
         postRepository.deleteById(Long.parseLong(postDeleteDto.getPostId()));
-        return obj.toString();
+        return Helper.makeReturnJSON("result", "True","msg","게시글 삭제 완료되었습니다.");
     }
 }
