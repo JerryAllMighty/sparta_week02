@@ -30,13 +30,6 @@
 //    public String login() {
 //        return "login";
 //    }
-////    @GetMapping("/user/login?error")
-////    public String loginError() {
-////        JSONObject obj = new JSONObject();
-////        obj.append("result", "fail");
-////        obj.append("msg", "닉네임 또는 패스워드를 확인해주세요.");
-////        return obj.toString();
-////    }
 //    // 회원 가입 페이지
 //    @GetMapping("/user/signup")
 //    public String signup() {

@@ -1,12 +1,18 @@
 package com.sparta.juteukki02.juteukki_week02.service;
 
+import com.sparta.juteukki02.juteukki_week02.Dto.UserLoginDto;
+import com.sparta.juteukki02.juteukki_week02.Dto.UserRegisterDto;
+import com.sparta.juteukki02.juteukki_week02.jwt.JwtTokenProvider;
 import com.sparta.juteukki02.juteukki_week02.model.User;
 import com.sparta.juteukki02.juteukki_week02.model.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -16,26 +22,38 @@ import static com.sparta.juteukki02.juteukki_week02.util.Helper.makeReturnJSON;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-//    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
-    public String checkRegister(User user){
+    public String checkLogin(UserLoginDto userLoginDto, HttpServletRequest request){
+        //        현재 사용자가 로그인을 했는지 체크
+        String header = jwtTokenProvider.resolveToken(request);
+        if (jwtTokenProvider.validateToken(header))
+        {
+            return "이미 로그인한 사용자입니다.";
+        }
+//        아직 로그인을 하지 않은 사용자라면, 아이디와 비밀번호로 정보 일치여부 탐색
+        User member = userRepository.findByUsername(userLoginDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("아이디를 확인해주세요."));
+        if (!passwordEncoder.matches(userLoginDto.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        // 정상 로그인의 경우 JSON 전달
+        String tokenString = jwtTokenProvider.createToken(member.getUsername(), member.getNickName(), member.getId());
+        return makeReturnJSON("result", "True", "msg", "로그인에 성공하였습니다.", "tokenname",tokenString);
+    }
+
+    public String checkRegister(UserRegisterDto user, HttpServletRequest request){
+        //        현재 사용자가 로그인을 했는지 체크
+        String header = jwtTokenProvider.resolveToken(request);
+        if (jwtTokenProvider.validateToken(header))
+        {
+            return "이미 로그인한 사용자입니다.";
+        }
         String username = user.getUsername();
         String password = user.getPassword();
-        String passwordcheck = user.getPasswordCheck();
         String nickName = user.getNickName();
-//        - 닉네임은 `최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)`로 구성하기
-        if(!Pattern.matches("^[A-Za-z0-9]*$", nickName) || nickName.length() < 3){
-            return makeReturnJSON("result", "fail", "msg", "닉네임은 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)입니다.");
-        }
-//        - 비밀번호는 `최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패`로 만들기
-        if(password.contains(nickName) || password.length() < 4){
-            return makeReturnJSON("result", "fail", "msg", "비밀번호는 `최소 4자 이상이며, 닉네임과 같은 값이 포함될 수 없습니다.");
-        }
-//        - 비밀번호 확인은 비밀번호와 정확하게 일치하기
-        if(!password.equals(passwordcheck)){
-            return makeReturnJSON("result", "fail", "msg", "비밀번호 일치 여부를 확인해주세요.");
-        }
 // 회원 ID 중복 확인
         Optional<User> foundId = userRepository.findByUsername(username);
         if (foundId.isPresent()) {
@@ -48,11 +66,10 @@ public class UserService {
         }
 
 // 패스워드 암호화
-//        password = passwordEncoder.encode(password);
-        // DB에 실제로 넣을 데이터 형태로 만들어주고 넣어주기
+        password = passwordEncoder.encode(password);
+        // 객체를 만들어 넣어주기
         User user2 = new User(username, password, nickName);
         userRepository.save(user2);
-        JSONObject result = new JSONObject(user2);
-        return makeReturnJSON("result", "success", "msg", result);
+        return makeReturnJSON("result", "success", "msg", "회원가입에 성공하였습니다.");
     }
 }

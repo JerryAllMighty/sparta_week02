@@ -22,7 +22,7 @@ public class LikeService {
         boolean exists = likeRepository.existsByPostIdAndUserId(likeDto.getPostId(), likeDto.getUserId());
         if (exists == false) {
             //        게시글 좋아요 +1
-            postService.updateLikeCount(Long.parseLong(likeDto.getPostId()));
+            postService.updateLikeCount(likeDto.getPostId());
             //            좋아요 테이블에 생성
             MyLike like = new MyLike(likeDto);
             likeRepository.save(like);
@@ -31,7 +31,7 @@ public class LikeService {
         // 만약 이미 좋아요를 했다면
         else{
             //        게시글 좋아요 -1
-            postService.minusLikeCount(Long.parseLong(likeDto.getPostId()));
+            postService.minusLikeCount(likeDto.getPostId());
             //            좋아요 테이블 삭제
             likeRepository.deleteByPostIdAndUserId(likeDto.getPostId(),likeDto.getUserId());
             return makeReturnJSON("result", "True", "msg", "좋아요를 취소했습니다.");

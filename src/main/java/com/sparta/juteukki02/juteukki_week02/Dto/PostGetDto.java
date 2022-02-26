@@ -9,6 +9,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class PostGetDto {
     @NotBlank(message = "사용자 ID를 입력해주세요.")
-    private String username;
+    private Long userId;
 
 }

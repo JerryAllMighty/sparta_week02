@@ -20,10 +20,10 @@ public class MyLike {
     // nullable: null 허용 여부
 // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(nullable = false)
-    private String postId;
+    private Long postId;
 
     @Column(nullable = false)
-    private String userId;
+    private Long userId;
 
     public MyLike(LikeDto likeDto) {
         this.postId = likeDto.getPostId();

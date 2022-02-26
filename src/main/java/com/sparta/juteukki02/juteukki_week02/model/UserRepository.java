@@ -9,6 +9,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 //    @Query("SELECT COUNT(u.email) > 0 FROM User u WHERE u.email = ?1 AND u.password = ?2")
 //    boolean existsIdPw(String id, String pw);
 
+    Optional<User> findByUsernameAndPassword(String username, String password);
     Optional<User> findByUsername(String username);
 
     Optional<User> findByNickName(String nickname);

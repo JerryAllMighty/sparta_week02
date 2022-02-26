@@ -1,6 +1,7 @@
 package com.sparta.juteukki02.juteukki_week02.controller;
 
 import com.sparta.juteukki02.juteukki_week02.Dto.LikeDto;
+import com.sparta.juteukki02.juteukki_week02.jwt.JwtTokenProvider;
 import com.sparta.juteukki02.juteukki_week02.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +17,15 @@ import static com.sparta.juteukki02.juteukki_week02.util.Helper.makeReturnJSON;
 @RestController // JSON으로 데이터를 주고받음을 선언합니다.
 public class LikeRestController {
     private final LikeService likeService;
-
+    private final JwtTokenProvider jwtTokenProvider;
+    
     @PostMapping("/api/like")
     public String postLike(@RequestBody @Valid LikeDto likeDto, HttpServletRequest request){
-//        현재 사용자가 로그인을 했는지 체크
-        if (request.getSession(false) == null){
-            return makeReturnJSON("result", "False", "msg", "로그인이 필요합니다.");
+//        현재 세션이 유용한지 체크
+        String header = jwtTokenProvider.resolveToken(request);
+        if (!jwtTokenProvider.validateToken(header))
+        {
+            return "Token Non";
         }
         return likeService.checkLike(likeDto);
     }
