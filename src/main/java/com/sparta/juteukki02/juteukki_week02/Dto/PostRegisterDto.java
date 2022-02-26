@@ -17,4 +17,6 @@ public class PostRegisterDto {
     private String image;
 
     private String type;
+
+    private Long userId;
 }

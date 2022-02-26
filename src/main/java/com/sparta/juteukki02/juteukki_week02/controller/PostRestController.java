@@ -14,6 +14,7 @@ import com.sparta.juteukki02.juteukki_week02.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,19 +39,25 @@ public class PostRestController {
 
 
     @PostMapping("/api/showpost")
-    public String getPosts(@RequestBody PostGetDto postGetDto) {
+    public String getPosts( @RequestBody PostGetDto postGetDto) {
+
         List<Post> posts = postRepository.findAll();
         List<MyLike> likes = likeRepository.findByUserId(postGetDto.getUserId());
         return Helper.makeReturnJSONList("total", posts,"myLike",likes);
 
     }
     @PostMapping("/api/post")
-    public String addPosts(@RequestBody PostRegisterDto postDto, HttpServletRequest request) {
+    public String addPosts(@AuthenticationPrincipal User user,@RequestBody PostRegisterDto postDto, HttpServletRequest request) {
+
         String header = jwtTokenProvider.resolveToken(request);
         if (!jwtTokenProvider.validateToken(header))
         {
-            return "Token Non";
+            return "Invalid Token";
         }
+//        Long userId = user.getId();
+//        if (!userId.equals(postDto.getUserId())){
+//            return "해당 당사자만 할 수 있는 기능입니다.";
+//        }
 
         Post post = new Post(postDto);
 //        postService.insertWithQuery(post);
