@@ -22,7 +22,7 @@ import static com.sparta.juteukki02.juteukki_week02.util.Helper.makeReturnJSON;
 @Entity // DB 테이블 역할을 합니다.
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class User {
     private String passwordCheck;
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,43 +45,35 @@ public class User implements UserDetails {
         this.password = password;
         this.nickName = nickName;
     }
-    public User(UserLoginDto userLoginDto) {
-        this.username = userLoginDto.getUsername();
-        this.password = userLoginDto.getPassword();
-    }
     public String isValidLogin(UserLoginDto userLoginDto){
-        if(userLoginDto.getUsername().equals(null)){
+
+        String username = userLoginDto.getUsername();
+        String password = userLoginDto.getPassword();
+        if(username == null || username.isEmpty()){
             return makeReturnJSON("result", "fail", "msg", "아이디는 필수 입력입니다.");
-        }
-        if(userLoginDto.getPassword().equals(null)){
+        }else if(password == null || password.isEmpty()){
             return makeReturnJSON("result", "fail", "msg", "비밀번호는 필수 입력입니다.");
         }
         return "success";
     }
-
-    public User(UserRegisterDto userRegisterDto) {
-        this.username = userRegisterDto.getUsername();
-        this.password = userRegisterDto.getPassword();
-        this.nickName = userRegisterDto.getNickName();
-        this.passwordCheck =userRegisterDto.getPasswordCheck();
-    }
     public String isValidRegister(UserRegisterDto userRegisterDto){
-        if(userRegisterDto.getUsername().equals(null)){
-            return makeReturnJSON("result", "fail", "msg", "아이디는 필수 입력입니다.");
-        }
-        if(userRegisterDto.getPassword().equals(null)){
-            return makeReturnJSON("result", "fail", "msg", "비밀번호는 필수 입력입니다.");
-        }
-        if(userRegisterDto.getPasswordCheck().equals(null)){
-            return makeReturnJSON("result", "fail", "msg", "비밀번호 확인은 필수 입력입니다.");
-        }
-        if(userRegisterDto.getNickName().equals(null)){
-            return makeReturnJSON("result", "fail", "msg", "별명은 필수 입력입니다.");
-        }
         String username = userRegisterDto.getUsername();
         String password = userRegisterDto.getPassword();
-        String passwordcheck = userRegisterDto.getPasswordCheck();
+        String passwordCheck = userRegisterDto.getPasswordCheck();
         String nickName = userRegisterDto.getNickName();
+
+        if(username == null || username.isEmpty()){
+            return makeReturnJSON("result", "fail", "msg", "아이디는 필수 입력입니다.");
+        }
+        if(password == null || password.isEmpty()){
+            return makeReturnJSON("result", "fail", "msg", "비밀번호는 필수 입력입니다.");
+        }
+        if(passwordCheck == null || passwordCheck.isEmpty()){
+            return makeReturnJSON("result", "fail", "msg", "비밀번호 확인은 필수 입력입니다.");
+        }
+        if(nickName == null || nickName.isEmpty()){
+            return makeReturnJSON("result", "fail", "msg", "별명은 필수 입력입니다.");
+        }
 //        - 닉네임은 `최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)`로 구성하기
         if(!Pattern.matches("^[A-Za-z0-9]*$", nickName) || nickName.length() < 3){
             return makeReturnJSON("result", "fail", "msg", "닉네임은 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)입니다.");
@@ -91,7 +83,7 @@ public class User implements UserDetails {
             return makeReturnJSON("result", "fail", "msg", "비밀번호는 `최소 4자 이상이며, 닉네임과 같은 값이 포함될 수 없습니다.");
         }
 //        - 비밀번호 확인은 비밀번호와 정확하게 일치하기
-        if(!password.equals(passwordcheck)){
+        if(!password.equals(passwordCheck)){
             return makeReturnJSON("result", "fail", "msg", "비밀번호 일치 여부를 확인해주세요.");
         }
         return "success";
@@ -101,35 +93,5 @@ public class User implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

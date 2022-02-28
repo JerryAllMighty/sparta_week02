@@ -75,4 +75,18 @@ public class JwtTokenProvider {
             return false;
         }
     }
+    // 토큰 만료 일자 당기기 (사실상 파기)
+    public void invalidateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            System.out.println(claims.getBody().getExpiration());
+            Date now = new Date();
+            claims.getBody().setExpiration(new Date(now.getTime() - (20 * 30 * 60 * 1000L)));
+            System.out.println(now);
+            System.out.println(claims.getBody().getExpiration());
+            return;
+        } catch (Exception e) {
+            return;
+        }
+    }
 }

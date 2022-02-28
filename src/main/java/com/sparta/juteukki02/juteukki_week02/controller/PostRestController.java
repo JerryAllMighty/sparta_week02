@@ -6,20 +6,15 @@ import com.sparta.juteukki02.juteukki_week02.Dto.PostGetDto;
 import com.sparta.juteukki02.juteukki_week02.Dto.PostUpdateDto;
 import com.sparta.juteukki02.juteukki_week02.jwt.JwtTokenProvider;
 import com.sparta.juteukki02.juteukki_week02.model.*;
-import com.sparta.juteukki02.juteukki_week02.security.UserDetailsImpl;
 import com.sparta.juteukki02.juteukki_week02.service.LikeService;
 import com.sparta.juteukki02.juteukki_week02.service.PostService;
 import com.sparta.juteukki02.juteukki_week02.service.UserService;
 import com.sparta.juteukki02.juteukki_week02.util.Helper;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -50,7 +45,7 @@ public class PostRestController {
     public String addPosts(@AuthenticationPrincipal User user,@RequestBody PostRegisterDto postDto, HttpServletRequest request) {
 
         String header = jwtTokenProvider.resolveToken(request);
-        if (!jwtTokenProvider.validateToken(header))
+        if (!jwtTokenProvider.validateToken(header) || header.equals(null))
         {
             return "Invalid Token";
         }

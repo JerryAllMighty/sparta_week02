@@ -8,9 +8,6 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class LikeDto {
-    @NotBlank(message = "사용자 PK을 입력해주세요.")
     private Long userId;
-
-    @NotBlank(message = "게시글 PK를 입력해주세요.")
     private Long postId;
 }

@@ -72,4 +72,9 @@ public class UserService {
         userRepository.save(user2);
         return makeReturnJSON("result", "success", "msg", "회원가입에 성공하였습니다.");
     }
+    public String checkLogOut(HttpServletRequest request ){
+        String header = jwtTokenProvider.resolveToken(request);
+        jwtTokenProvider.invalidateToken(header);
+        return makeReturnJSON("result", "success", "msg", "로그아웃에 성공하였습니다.");
+    }
 }

@@ -20,7 +20,7 @@ public class LikeRestController {
     private final JwtTokenProvider jwtTokenProvider;
     
     @PostMapping("/api/like")
-    public String postLike(@RequestBody @Valid LikeDto likeDto, HttpServletRequest request){
+    public String postLike(@RequestBody LikeDto likeDto, HttpServletRequest request){
 //        현재 세션이 유용한지 체크
         String header = jwtTokenProvider.resolveToken(request);
         if (!jwtTokenProvider.validateToken(header))

@@ -23,18 +23,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-// h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
-        web
-                .ignoring()
-                .antMatchers("/h2-console/**");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {

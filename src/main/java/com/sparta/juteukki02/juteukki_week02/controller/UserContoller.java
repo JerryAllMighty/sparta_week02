@@ -2,6 +2,7 @@ package com.sparta.juteukki02.juteukki_week02.controller;
 
 import com.sparta.juteukki02.juteukki_week02.Dto.UserLoginDto;
 import com.sparta.juteukki02.juteukki_week02.Dto.UserRegisterDto;
+import com.sparta.juteukki02.juteukki_week02.jwt.JwtTokenProvider;
 import com.sparta.juteukki02.juteukki_week02.model.*;
 import com.sparta.juteukki02.juteukki_week02.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +48,10 @@ public class UserContoller {
             return valadationCheck;
 
     }
-//    @PostMapping("/logout")
-//    public String login(@RequestBody HttpServletRequest request) {
-//        //토큰 파기
-//
-//
-//    }
+    @PostMapping("/logout")
+    public String login(HttpServletRequest request) {
+        //토큰 파기
+        return userService.checkLogOut(request);
+
+    }
 }
