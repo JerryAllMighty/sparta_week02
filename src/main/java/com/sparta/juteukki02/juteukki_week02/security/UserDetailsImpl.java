@@ -56,7 +56,7 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
+
     private List<String> roles = new ArrayList<>();
 
     @Override
@@ -65,4 +65,5 @@ public class UserDetailsImpl implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
+
 }

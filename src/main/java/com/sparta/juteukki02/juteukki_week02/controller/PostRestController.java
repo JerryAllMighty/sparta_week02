@@ -21,10 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor // final로 선언된 멤버 변수를 자동으로 생성합니다.
 @RestController // JSON으로 데이터를 주고받음을 선언합니다.
 public class PostRestController {
-    private final UserService userService;
-    private final UserRepository userRepository;
-
-    private final LikeService likeService;
     private final LikeRepository likeRepository;
 
     private final PostService postService;
@@ -38,26 +34,21 @@ public class PostRestController {
 
         List<Post> posts = postRepository.findAll();
         List<MyLike> likes = likeRepository.findByUserId(postGetDto.getUserId());
-        return Helper.makeReturnJSONList("total", posts,"myLike",likes);
+        Helper.JSONBuilder builder = new Helper.JSONBuilder();
+        builder.addKeyValueList("total", posts);
+        builder.addKeyValueList("myLike", likes);
+        return builder.build().getReturnJSON();
 
     }
     @PostMapping("/api/post")
     public String addPosts(@AuthenticationPrincipal User user,@RequestBody PostRegisterDto postDto, HttpServletRequest request) {
 
         String header = jwtTokenProvider.resolveToken(request);
-        if (!jwtTokenProvider.validateToken(header) || header.equals(null))
+        if (!jwtTokenProvider.validateToken(header))
         {
             return "Invalid Token";
         }
-//        Long userId = user.getId();
-//        if (!userId.equals(postDto.getUserId())){
-//            return "해당 당사자만 할 수 있는 기능입니다.";
-//        }
-
-        Post post = new Post(postDto);
-//        postService.insertWithQuery(post);
-        postRepository.save(post);
-        return Helper.makeReturnJSON("result", "True","msg","게시글 등록이 완료되었습니다.");
+        return postService.uploadPost(postDto);
     }
     @PutMapping("/api/post")
     public String updatePosts(@RequestBody PostUpdateDto postUpdateDto, HttpServletRequest request) {
@@ -67,7 +58,10 @@ public class PostRestController {
             return "Token Non";
         }
         postService.update(postUpdateDto);
-        return Helper.makeReturnJSON("result", "True","msg","게시글 수정 완료되었습니다.");
+        Helper.JSONBuilder builder = new Helper.JSONBuilder();
+        builder.addKeyValue("result", "True");
+        builder.addKeyValue("msg","게시글 수정 완료되었습니다.");
+        return builder.build().getReturnJSON();
     }
     @DeleteMapping("/api/post")
     public String deletePosts(@RequestBody PostDeleteDto postDeleteDto, HttpServletRequest request) {
@@ -77,6 +71,9 @@ public class PostRestController {
             return "Token Non";
         }
         postRepository.deleteById(Long.parseLong(postDeleteDto.getPostId()));
-        return Helper.makeReturnJSON("result", "True","msg","게시글 삭제 완료되었습니다.");
+        Helper.JSONBuilder builder = new Helper.JSONBuilder();
+        builder.addKeyValue("result", "True");
+        builder.addKeyValue("msg","게시글 삭제 완료되었습니다.");
+        return builder.build().getReturnJSON();
     }
 }

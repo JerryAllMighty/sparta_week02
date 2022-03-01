@@ -3,12 +3,11 @@ package com.sparta.juteukki02.juteukki_week02.service;
 import com.sparta.juteukki02.juteukki_week02.Dto.LikeDto;
 import com.sparta.juteukki02.juteukki_week02.model.MyLike;
 import com.sparta.juteukki02.juteukki_week02.model.LikeRepository;
+import com.sparta.juteukki02.juteukki_week02.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
-import static com.sparta.juteukki02.juteukki_week02.util.Helper.makeReturnJSON;
 
 @RequiredArgsConstructor
 @Service
@@ -20,13 +19,20 @@ public class LikeService {
     public String checkLike(LikeDto likeDto){
         // 만약 아직 이 게시글에 좋아요를 안 했다면 +1
         boolean exists = likeRepository.existsByPostIdAndUserId(likeDto.getPostId(), likeDto.getUserId());
-        if (exists == false) {
+        if (!exists) {
             //        게시글 좋아요 +1
             postService.updateLikeCount(likeDto.getPostId());
             //            좋아요 테이블에 생성
-            MyLike like = new MyLike(likeDto);
+            // 빌더 패턴 적용
+            MyLike like = MyLike.builder()
+                            .postId(likeDto.getPostId())
+                                    .userId(likeDto.getUserId())
+                                            .build();
             likeRepository.save(like);
-            return makeReturnJSON("result", "False", "msg", "좋아요를 반영했습니다.");
+            Helper.JSONBuilder builder = new Helper.JSONBuilder();
+            builder.addKeyValue("result", "False");
+            builder.addKeyValue("msg", "좋아요를 반영했습니다.");
+            return builder.build().getReturnJSON();
         }
         // 만약 이미 좋아요를 했다면
         else{
@@ -34,7 +40,10 @@ public class LikeService {
             postService.minusLikeCount(likeDto.getPostId());
             //            좋아요 테이블 삭제
             likeRepository.deleteByPostIdAndUserId(likeDto.getPostId(),likeDto.getUserId());
-            return makeReturnJSON("result", "True", "msg", "좋아요를 취소했습니다.");
+            Helper.JSONBuilder builder = new Helper.JSONBuilder();
+            builder.addKeyValue("result", "False");
+            builder.addKeyValue("msg", "좋아요를 취소했습니다.");
+            return builder.build().getReturnJSON();
         }
 
     }

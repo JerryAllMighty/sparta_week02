@@ -2,9 +2,7 @@ package com.sparta.juteukki02.juteukki_week02.model;
 
 import com.sparta.juteukki02.juteukki_week02.Dto.PostRegisterDto;
 import com.sparta.juteukki02.juteukki_week02.Dto.PostUpdateDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -13,6 +11,8 @@ import javax.persistence.*;
 @Getter // get 함수를 일괄적으로 만들어줍니다.
 @NoArgsConstructor // 기본 생성자를 만들어줍니다.
 @Entity // DB 테이블 역할을 합니다.
+@Builder
+@AllArgsConstructor
 public class Post extends Timestamped{
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,18 +34,7 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private String type;
 
-    public Post(PostRegisterDto postDto){
-        this.nickName = postDto.getNickName();
-        this.contents = postDto.getContents();
-        this.image = postDto.getImage();
-        this.type = postDto.getType();
-        this.likeCount = 0;
-    }
-
-    public void updateLikeCount(){
-        this.likeCount += 1;
-
-    }
+    public void updateLikeCount(){this.likeCount += 1;}
     public void minusLikeCount(){
         this.likeCount -= 1;
     }
