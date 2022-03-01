@@ -9,12 +9,8 @@ import com.sparta.juteukki02.juteukki_week02.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Optional;
-
-
 
 @RequiredArgsConstructor
 @Service
@@ -23,14 +19,8 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public String checkLogin(UserLoginDto userLoginDto, HttpServletRequest request){
-        //        현재 사용자가 로그인을 했는지 체크
-        String header = jwtTokenProvider.resolveToken(request);
-        if (jwtTokenProvider.validateToken(header))
-        {
-            return "이미 로그인한 사용자입니다.";
-        }
-//        아직 로그인을 하지 않은 사용자라면, 아이디와 비밀번호로 정보 일치여부 탐색
+    public String checkLogin(UserLoginDto userLoginDto){
+        //  아직 로그인을 하지 않은 사용자라면, 아이디와 비밀번호로 정보 일치여부 탐색
         User member = userRepository.findByUsername(userLoginDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("아이디를 확인해주세요."));
         if (!passwordEncoder.matches(userLoginDto.getPassword(), member.getPassword())) {
@@ -45,20 +35,12 @@ public class UserService {
         return builder.build().getReturnJSON();
     }
 
-    public String checkRegister(UserRegisterDto userRegisterDto, HttpServletRequest request){
-        //        현재 사용자가 로그인을 했는지 체크
-        String header = jwtTokenProvider.resolveToken(request);
-        if (jwtTokenProvider.validateToken(header))
-        {
-            Helper.JSONBuilder builder = new Helper.JSONBuilder();
-            builder.addKeyValue("result", "fail");
-            builder.addKeyValue("msg", "이미 로그인한 사용자입니다.");
-            return builder.build().getReturnJSON();
-        }
+    public String checkRegister(UserRegisterDto userRegisterDto){
         String username = userRegisterDto.getUsername();
         String password = userRegisterDto.getPassword();
         String nickName = userRegisterDto.getNickName();
-// 회원 ID 중복 확인
+
+        // 회원 ID 중복 확인
         Optional<User> foundId = userRepository.findByUsername(username);
         if (foundId.isPresent()) {
             Helper.JSONBuilder builder = new Helper.JSONBuilder();
@@ -75,13 +57,11 @@ public class UserService {
             return builder.build().getReturnJSON();
         }
 
-// 패스워드 암호화
-        password = passwordEncoder.encode(password);
-        userRegisterDto.setPassword(password);
-        // 객체를 만들어 넣어주기
+        // 빌더 패턴 적용, 회원 정보 저장
         User user = User.builder()
                 .username(userRegisterDto.getUsername())
-                .password(userRegisterDto.getPassword())
+                // 패스워드 암호화
+                .password(passwordEncoder.encode(password))
                 .nickName(userRegisterDto.getNickName())
                     .build();
         userRepository.save(user);
@@ -91,6 +71,7 @@ public class UserService {
         return builder.build().getReturnJSON();
     }
 
+    // 로그아웃시, 토큰을 무효한 토큰으로 만들어준다
     public String checkLogOut(HttpServletRequest request ){
         String header = jwtTokenProvider.resolveToken(request);
         jwtTokenProvider.invalidateToken(header);

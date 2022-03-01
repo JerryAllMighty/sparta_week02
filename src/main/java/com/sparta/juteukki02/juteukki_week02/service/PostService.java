@@ -7,9 +7,6 @@ import com.sparta.juteukki02.juteukki_week02.model.PostRepository;
 import com.sparta.juteukki02.juteukki_week02.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
@@ -47,7 +44,7 @@ public class PostService {
 
 
     //게시글 좋아요 더하기
-    @Transactional // 메소드 동작이 SQL 쿼리문임을 선언합니다.
+    @Transactional
     public void updateLikeCount(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
@@ -55,7 +52,7 @@ public class PostService {
         post.updateLikeCount();
     }
 //게시글 좋아요 빼기
-    @Transactional // 메소드 동작이 SQL 쿼리문임을 선언합니다.
+    @Transactional
     public void minusLikeCount(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")

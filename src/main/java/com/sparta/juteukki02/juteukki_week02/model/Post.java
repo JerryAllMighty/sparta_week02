@@ -1,13 +1,9 @@
 package com.sparta.juteukki02.juteukki_week02.model;
 
-import com.sparta.juteukki02.juteukki_week02.Dto.PostRegisterDto;
 import com.sparta.juteukki02.juteukki_week02.Dto.PostUpdateDto;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-
 import javax.persistence.*;
 
-@Setter
 @Getter // get 함수를 일괄적으로 만들어줍니다.
 @NoArgsConstructor // 기본 생성자를 만들어줍니다.
 @Entity // DB 테이블 역할을 합니다.

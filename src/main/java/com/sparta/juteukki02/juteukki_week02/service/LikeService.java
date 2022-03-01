@@ -22,7 +22,7 @@ public class LikeService {
         if (!exists) {
             //        게시글 좋아요 +1
             postService.updateLikeCount(likeDto.getPostId());
-            //            좋아요 테이블에 생성
+            //            좋아요 테이블에 좋아요를 한 게시글 ID와 사용자 ID를 넣어주기
             // 빌더 패턴 적용
             MyLike like = MyLike.builder()
                             .postId(likeDto.getPostId())
