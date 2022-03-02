@@ -31,9 +31,9 @@ public class PostRestController {
     @PostMapping("/api/showpost")
     public String getPosts( @RequestBody PostGetDto postGetDto) {
         // 전체 게시글 조회
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postService.getTotal("total");
         // 사용자가 좋아요한 게시글 목록 조회
-        List<MyLike> likes = likeRepository.findByUserId(postGetDto.getUserId());
+        List<MyLike> likes = postService.getMyLike(postGetDto.getUserId());
         // 위의 조회 리스트들을 담은 JSON 빌더 패턴으로 만들기
         Helper.JSONBuilder builder = new Helper.JSONBuilder();
         builder.addKeyValueList("total", posts);
