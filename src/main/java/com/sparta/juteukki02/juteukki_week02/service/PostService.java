@@ -36,7 +36,7 @@ public class PostService {
 // 게시글 수정
     @Transactional // 메소드 동작이 SQL 쿼리문임을 선언합니다.
     public void update(PostUpdateDto postUpdateDto) {
-        Post post = postRepository.findById(Long.parseLong(postUpdateDto.getPostId())).orElseThrow(
+        Post post = postRepository.findById(postUpdateDto.getPostId()).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
         );
         post.update(postUpdateDto);

@@ -8,5 +8,7 @@ public interface LikeRepository extends JpaRepository<MyLike, Long> {
 
     void deleteByPostIdAndUserId(Long PostId, Long UserId);
 
+    void deleteByPostId(Long PostId);
+
     List<MyLike> findByUserId(Long userId);
 }

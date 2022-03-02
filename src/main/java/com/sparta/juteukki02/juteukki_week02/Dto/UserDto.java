@@ -12,12 +12,9 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class UserDto {
-    @NotBlank(message = "이메일을 입력해주세요.")
     private String account;
 
-    @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 
-    @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;
 }

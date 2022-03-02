@@ -27,11 +27,19 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String uri = ((HttpServletRequest) request).getRequestURI();
         System.out.println(uri);
 
-        //출력 메세지를 적기 위함
-        PrintWriter writer = response.getWriter();
+        //한글 출력을 위한 세팅
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=UTF-8");
+
         // 만약 로그인한 사람이 다시 로그인을 시도시, 메세지 출력
         if (uri.equals("/api/login") && jwtTokenProvider.validateToken(token)){
-            writer.print("이미 로그인한 사용자입니다.");
+            response.getWriter().print("이미 로그인한 사용자입니다.");
+            return ;
+        }
+
+        // 만약 로그인한 사람이 다시 회원가입을 시도시, 메세지 출력
+        if (uri.equals("/api/register") && jwtTokenProvider.validateToken(token)){
+            response.getWriter().print("이미 로그인한 사용자입니다.");
             return ;
         }
 

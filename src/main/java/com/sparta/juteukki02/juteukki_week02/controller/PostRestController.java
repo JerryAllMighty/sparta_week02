@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -43,19 +44,44 @@ public class PostRestController {
     // 게시글 등록
     @PostMapping("/api/post")
     public String addPosts(@RequestBody PostRegisterDto postRegisterDto) {
-        return postService.uploadPost(postRegisterDto);
+        Post post = new Post();
+        //넘겨받은 값이 nulL이거나, 기준 미달인지 체크
+        String validationCheck = post.isValidRegister(postRegisterDto);
+        if (validationCheck.equals("success")) {
+            return postService.uploadPost(postRegisterDto);
+        }else
+            return validationCheck;
     }
     // 게시글 수정
     @PutMapping("/api/post")
     public String updatePosts(@RequestBody PostUpdateDto postUpdateDto) {
-        postService.update(postUpdateDto);
-        return makeReturnJSON("result", "True", "msg","게시글 수정 완료되었습니다.");
+        Post post = new Post();
+        //넘겨받은 값이 nulL이거나, 기준 미달인지 체크
+        String validationCheck = post.isValidUpdate(postUpdateDto);
+        if (validationCheck.equals("success")) {
+            postService.update(postUpdateDto);
+            return makeReturnJSON("result", "True", "msg", "게시글 수정 완료되었습니다.");
+        }else
+            return validationCheck;
+
     }
     // 게시글 삭제
+    @Transactional
     @DeleteMapping("/api/post")
     public String deletePosts(@RequestBody PostDeleteDto postDeleteDto) {
-        postRepository.deleteById(Long.parseLong(postDeleteDto.getPostId()));
-        return makeReturnJSON("result", "True", "msg","게시글 삭제 완료되었습니다.");
+        Post post = new Post();
+        //넘겨받은 값이 nulL이거나, 기준 미달인지 체크
+        String validationCheck = post.isValidDelete(postDeleteDto);
+        if (validationCheck.equals("success")) {
+            Long postId = postDeleteDto.getPostId();
+            postRepository.deleteById(postId);
+            // MyLike 테이블에서도 같이 삭제
+            likeRepository.deleteByPostId(postId);
+            return makeReturnJSON("result", "True", "msg","게시글 삭제 완료되었습니다.");
+        }else
+            return validationCheck;
+
+
     }
     // 프론트엔드와 약속한 방식으로 리턴해주기 위해 리턴 형태를 가공하는 함수
     public String makeReturnJSON(String title1, Object contents1, String title2, Object contents2 ){
