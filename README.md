@@ -6,15 +6,14 @@
 ### Email : dbsalszz@naver.com :email: :love_letter:
 ***
 ## 사용 기술 :computer:
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">   
-- version : JDK 11.0.13 </br>
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> -version : JDK 11.0.13 </br>
           - 통합 로깅: JVM 충돌에 대한 근본 원인 분석이 용이하다.</br>
           - 모듈을 통해 애플리케이션에 필요한 구성 요소만 포함하는 런타임 사용자 지정을 사용할 수 있다.</br>
 </br>
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"></br>
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"></br>
 <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"></br>
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> -version : 8.0.27.    </br>
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> -version : 8.0.27.</br>
 <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"></br>
 
 ***
