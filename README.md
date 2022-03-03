@@ -7,6 +7,7 @@
 ***
 ## 사용 기술 :computer:
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> -version : JDK 11.0.13 </br>
+          - 사용 이유
           - 통합 로깅: JVM 충돌에 대한 근본 원인 분석이 용이하다.</br>
           - 모듈을 통해 애플리케이션에 필요한 구성 요소만 포함하는 런타임 사용자 지정을 사용할 수 있다.</br>
 </br>
