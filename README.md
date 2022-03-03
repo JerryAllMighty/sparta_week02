@@ -6,10 +6,10 @@
 ### Email : dbsalszz@naver.com :email: :love_letter:
 ***
 ## 사용 기술 :computer:
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> -version : JDK 11.0.13 </br>
-          - 사용 이유
-          - 통합 로깅: JVM 충돌에 대한 근본 원인 분석이 용이하다.</br>
-          - 모듈을 통해 애플리케이션에 필요한 구성 요소만 포함하는 런타임 사용자 지정을 사용할 수 있다.</br>
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> -version : Java 8, JDK 11.0.13 </br>
+          - Java 11이 아닌 Java 8을 사용한 이유</br>
+          - 외부 개발 툴과의 연동성에서 더 안정적이다.</br>
+          - Maven이나 Gradle같은 내부 빌드 툴이 가장 안정적인 버전</br>
 </br>
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"></br>
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"></br>
