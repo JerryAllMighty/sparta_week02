@@ -33,7 +33,7 @@ jobs:
         shell : bash
 
       - name: Make Zip File
-        run: zip -qq -r -j ./$GITHUB_SHA.zip
+        run: zip -r -qq -j ./$GITHUB_SHA.zip
         shell: bash
 
 
