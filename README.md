@@ -2,15 +2,19 @@
 ***
 
 ## 개발자 :bust_in_silhouette:
-### 김윤민   :rose:  
+### 이름 : 김윤민   :rose:  
 ### Email : dbsalszz@naver.com :email: :love_letter:
 ***
 ## 사용 기술 :computer:
-<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">   -version : JDK 11.0.13 </br>
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> -version : Java 8, JDK 11.0.13 </br>
+          - Java 11이 아닌 Java 8을 사용한 이유</br>
+          - 외부 개발 툴과의 연동성에서 더 안정적이다.</br>
+          - Maven이나 Gradle같은 내부 빌드 툴이 가장 안정적인 버전</br>
+</br>
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"></br>
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"></br>
 <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"></br>
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> -version : 8.0.27.    </br>
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> -version : 8.0.27.</br>
 <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"></br>
 
 ***
