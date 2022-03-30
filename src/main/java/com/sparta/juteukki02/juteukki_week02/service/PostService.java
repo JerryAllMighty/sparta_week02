@@ -1,6 +1,5 @@
 package com.sparta.juteukki02.juteukki_week02.service;
 
-import com.sparta.juteukki02.juteukki_week02.Dto.PostGetDto;
 import com.sparta.juteukki02.juteukki_week02.Dto.PostRegisterDto;
 import com.sparta.juteukki02.juteukki_week02.Dto.PostUpdateDto;
 import com.sparta.juteukki02.juteukki_week02.model.LikeRepository;
@@ -25,14 +24,12 @@ public class PostService {
     @Cacheable(value = "post")
     public List<Post> getTotal(String key) {
         // 아직 캐시에 정보가 저장되지 않았다면, 첫 1회만 전체 게시글 조회 후 저장
-        System.out.println("This means it's the first time saving TotalPosts cache.");
         return postRepository.findAll();
 
     }
     @Cacheable(value = "my_like")
     public List<MyLike> getMyLike(Long userId) {
         // 아직 캐시에 정보가 저장되지 않았다면, 첫 1회만 좋아요한 게시글 조회 후 저장
-        System.out.println("This means it's the first time saving MyLike cache.");
         return likeRepository.findByUserId(userId);
 
     }
