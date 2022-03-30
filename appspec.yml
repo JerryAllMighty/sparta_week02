@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu
+    destination: /home/ubuntu/
     overwrite: yes
 permissions:
-  - object: /home/ubuntu
+  - object: /home/ubuntu/
     owner: ubuntu
     group: ubuntu
 
