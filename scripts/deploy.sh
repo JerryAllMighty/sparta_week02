@@ -1,25 +1,33 @@
 #!/bin/bash
 
-echo "> deploy 실행이 되는가"
 
-REPOSITORY=/home/ubuntu/Juteukki_week02
-cd $REPOSITORY
-APP_NAME=cicdapp
+REPOSITORY=/home/ubuntu
+PROJECT_NAME=Juteukki_week02
 
-echo "> 새 어플리케이션 배포 중"
-JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
-JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
+echo "> Build 파일 복사"
+cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
-CURRENT_PID=$(pgrep -f $APP_NAME)
+CURRENT_PID=$(pgrep -fl $PROJECT_NAME | grep jar | awk '{print $1}')
 
-if [ -z $CURRENT_PID ]
+
+if [ -z $CURRENT_PID ];
 then
   echo "> 종료할 것 없음"
 else
-  echo "> kill -9 $CURRENT_PID"
+  echo "> kill -15 $CURRENT_PID"
   kill -15 $CURRENT_PID
   sleep 5
 fi
 
+JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+chmod +x $JAR_NAME
+
+
+
 echo "> JAR 파일 배포"
-nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+nohup java -jar \
+-Dspring.config.location=classpath:/application.
+properties,classpath:/application-real.properties,/home/ubuntu/application-oauth.properties,
+/home/ubuntu/application-real-db.properties \
+-Dspring.profiles.active=real \
+$JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
