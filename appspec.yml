@@ -12,10 +12,10 @@ permissions:
     group: ubuntu
 
 hooks:
-#  AfterInstall:
-#    - location: scripts/deploy.sh
-#      timeout: 60
-#      runas: ubuntu
+  AfterInstall:
+    - location: scripts/deploy.sh
+      timeout: 60
+      runas: ubuntu
   AfterInstall:
     - location: stop.sh
       timeout: 60
