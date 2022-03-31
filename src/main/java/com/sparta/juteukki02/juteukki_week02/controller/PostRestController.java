@@ -36,7 +36,7 @@ public class PostRestController {
         List<MyLike> likes = postService.getMyLike(postGetDto.getUserId());
         // 위의 조회 리스트들을 담은 JSON 빌더 패턴으로 만들기
         Helper.JSONBuilder builder = new Helper.JSONBuilder();
-        builder.addKeyValueList("cicd", posts);
+        builder.addKeyValueList("cicdTest", posts);
         builder.addKeyValueList("myLike", likes);
         return builder.build().getReturnJSON();
 
