@@ -7,7 +7,6 @@ cd $REPOSITORY
 
 PROJECT_NAME=Juteukki_week02
 
-
 echo "> 새 어플리케이션 배포 중"
 JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
