@@ -5,14 +5,14 @@ echo "> deploy 실행이 되는가"
 REPOSITORY=/home/ubuntu
 cd $REPOSITORY
 
-APP_NAME=cicdapp
+PROJECT_NAME=Juteukki_week02
 
 
 echo "> 새 어플리케이션 배포 중"
 JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
-CURRENT_PID=$(pgrep -f $APP_NAME)
+CURRENT_PID=$(pgrep -f $PROJECT_NAME)
 
 if [ -z $CURRENT_PID ]
 then
